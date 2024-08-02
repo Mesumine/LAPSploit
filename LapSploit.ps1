@@ -4,5 +4,10 @@ $username=$computer.cn + "\Administrator"
 $pass=$computer.'ms-mcs-admpwd'
 $secpass = ConvertTo-SecureString $pass -AsPlainText -force
 $cred=new-object System.Management.Automation.PSCredential( $username, $secpass)
-invoke-command -computername $computer.cn -ScriptBlock {hostname} -Credential $cred
+$job = invoke-command -ComputerName $computer.cn -ScriptBlock {hostname} -Credential $cred -AsJob 
+$timeout=10
+$do = $job | wait-job -timeout $timeout
 }
+
+
+
